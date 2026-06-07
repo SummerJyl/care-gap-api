@@ -1,0 +1,9 @@
+fastapi
+uvicorn[standard]
+fhir.resources
+pydantic
+python-dotenv
+psycopg2-binary
+sqlalchemy
+pytest
+httpx
