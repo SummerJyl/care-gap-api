@@ -7,6 +7,10 @@ router = APIRouter()
 async def ingest_bundle(bundle: dict):
     try:
         result = parse_bundle(bundle)
-        return {"status": "accepted", "patient_id": result["patient_id"]}
+        return {
+            "status": "accepted",
+            "patient_id": result["patient_id"],
+            "conditions": result["conditions"]
+        }
     except Exception as e:
         raise HTTPException(status_code=422, detail=str(e))
