@@ -1,4 +1,5 @@
 from fhir.resources.bundle import Bundle
+from app.services.hcc_mapper import map_icd10_to_hcc
 
 def parse_bundle(raw: dict) -> dict:
     bundle = Bundle.model_validate(raw)
@@ -38,6 +39,8 @@ def extract_condition(resource) -> dict | None:
                     display = coding.display
                     break
 
+        hcc = map_icd10_to_hcc(icd10_code) if icd10_code else None
+
         return {
             "icd10_code": icd10_code,
             "display": display,
@@ -46,7 +49,8 @@ def extract_condition(resource) -> dict | None:
                 else None,
             "onset_date": str(resource.onsetDateTime)
                 if hasattr(resource, "onsetDateTime") and resource.onsetDateTime
-                else None
+                else None,
+            "hcc_mapping": hcc
         }
     except Exception:
         return None
