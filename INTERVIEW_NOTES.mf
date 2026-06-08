@@ -1,0 +1,13 @@
+<!-- 
+I built:
+
+"I built a REST API that accepts a FHIR R4 Bundle — 
+which is the standard format EHR systems use to exchange patient data — 
+extracts the patient's diagnoses, and maps each ICD-10 code to its corresponding HCC category using the CMS V28 model. 
+HCC stands for Hierarchical Condition Category — it's how Medicare measures patient complexity and calculates risk scores that directly affect how much ACOs like Aledade get paid."
+
+Why it matters:
+
+"If a patient has Type 2 diabetes documented in the EHR but it's not captured in their HCC risk score for the current year, 
+the practice loses revenue and the patient may not get the preventive care they need. My API surfaces that gap."
+-->
