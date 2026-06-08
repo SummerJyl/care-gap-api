@@ -36,13 +36,13 @@ HCC_PRIORITY = {
 }
 
 def detect_gaps(conditions: list[dict]) -> list[dict]:
-    # Get all HCC codes currently documented for this patient
     documented_hccs = set()
     for condition in conditions:
         if condition.get("hcc_mapping"):
             documented_hccs.add(condition["hcc_mapping"]["hcc_code"])
 
     gaps = []
+    flagged_hccs = set()  # track already flagged gaps
 
     for hcc_code in documented_hccs:
         rule = COMORBIDITY_RULES.get(hcc_code)
@@ -50,15 +50,14 @@ def detect_gaps(conditions: list[dict]) -> list[dict]:
             continue
 
         for missing_hcc in rule["check_for"]:
-            if missing_hcc not in documented_hccs:
+            if missing_hcc not in documented_hccs and missing_hcc not in flagged_hccs:
                 gaps.append({
                     "gap_hcc": missing_hcc,
                     "triggered_by": hcc_code,
                     "rationale": rule["rationale"],
                     "priority_score": HCC_PRIORITY.get(missing_hcc, 0.3)
                 })
+                flagged_hccs.add(missing_hcc)
 
-    # Sort by priority score, highest first
     gaps.sort(key=lambda x: x["priority_score"], reverse=True)
-
     return gaps
