@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.routers import ingest
+from app.routers import patients
 from app.database import init_db
 
 app = FastAPI(
@@ -18,6 +19,7 @@ app.add_middleware(
 )
 
 app.include_router(ingest.router, prefix="/api/v1", tags=["ingest"])
+app.include_router(patients.router, prefix="/api/v1", tags=["patients"])
 
 @app.on_event("startup")
 def on_startup():
