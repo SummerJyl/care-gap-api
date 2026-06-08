@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.routers import ingest
+from app.database import init_db
 
 app = FastAPI(
     title="Care Gap API",
@@ -17,6 +18,10 @@ app.add_middleware(
 )
 
 app.include_router(ingest.router, prefix="/api/v1", tags=["ingest"])
+
+@app.on_event("startup")
+def on_startup():
+    init_db()
 
 @app.get("/health")
 def health_check():
